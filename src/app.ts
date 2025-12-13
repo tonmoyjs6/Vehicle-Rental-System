@@ -19,6 +19,15 @@ app.get('/', (req:Request, res:Response) => {
 })
 
 
+
+app.use("/api/v1/auth",authRouter)
+app.use("/api/v1/vehicles",vehicleRouter)
+app.use("/api/v1/users",userRouter)
+app.use("/api/v1/bookings",bookingRouter)
+
+
+
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -26,11 +35,5 @@ app.use((req, res) => {
     path: req.path,
   });
 });
-
-app.use("/api/v1/auth",authRouter)
-app.use("/api/v1/vehicles",vehicleRouter)
-app.use("/api/v1/users",userRouter)
-app.use("/api/v1/bookings",bookingRouter)
-
 
 export default app

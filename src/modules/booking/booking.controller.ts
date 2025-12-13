@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { bookingService } from "./booking.service";
-import Jwt, { JwtPayload } from "jsonwebtoken";
+import Jwt from "jsonwebtoken";
 import { config } from "../../config/config";
+import { JwtPayload } from "../interfaces/jwtpayload.interface";
 
 
 
@@ -52,11 +53,11 @@ const getAllBooking = async (req: Request, res: Response) => {
         const bearerToken = req.headers.authorization
 
         const token = bearerToken?.split(" ")[1]
-        const decode = Jwt.verify(token as string, config.secret_key as string)
+        const decode = Jwt.verify(token as string, config.secret_key as string) as JwtPayload
 
 
 
-        const result = await bookingService.getAllBooking(decode as JwtPayload)
+        const result = await bookingService.getAllBooking(decode )
 
 
 
@@ -88,8 +89,8 @@ const updateBooking = async (req: Request, res: Response) => {
         const bookingId = req.params.bookingId
         const token = req.headers.authorization
         const bearerToken = token?.split(" ")[1]
-        const tokenDecode = Jwt.verify(bearerToken as string, config.secret_key as string)
-        const bookingDetails = await bookingService.updateBooking(bookingId!, tokenDecode as string)
+        const tokenDecode = Jwt.verify(bearerToken as string, config.secret_key as string) as JwtPayload
+        const bookingDetails = await bookingService.updateBooking(bookingId!, tokenDecode )
 
 
         if (bookingDetails[0].status === "cancelled") {

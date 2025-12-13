@@ -1,4 +1,5 @@
 import { pool } from "../../config/db";
+import { JwtPayload } from "../interfaces/jwtpayload.interface";
 
 
 
@@ -90,7 +91,6 @@ if(vhicleDailyPrice.rows[0].availability_status!=="booked"){
 
 
 
-    // const totalPrice=(endDate.getDate()-startdate.getDate())*vhicleDailyPrice.rows[0].daily_rent_price
 
 
 
@@ -165,11 +165,11 @@ const getAllBooking = async (payload: Record<string, unknown>) => {
 
 
 
-const updateBooking=async(bookingId:string,tokenDecode:string)=>{
+const updateBooking=async(bookingId:string,tokenDecode:JwtPayload)=>{
     
     let vehicleStatus="available"
     
-    const {role,email}=tokenDecode
+    const {role, email}=tokenDecode 
     
 
     const bookingData=await pool.query(`SELECT * FROM bookings WHERE id=$1`,[bookingId])

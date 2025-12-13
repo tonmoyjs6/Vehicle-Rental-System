@@ -1,6 +1,7 @@
 import { config } from "../../config/config"
 import { pool } from "../../config/db"
 import Jwt from "jsonwebtoken"
+import { JwtPayload } from "../interfaces/jwtpayload.interface"
 
 // vehicle created only on role admin
 
@@ -49,7 +50,7 @@ const deleteAVehicleByAdmin = async (vehicleId: string, isAdmin: string) => {
 
 
     const token = isAdmin?.split(" ")[1]
-    const decode = Jwt.verify(token as string, config.secret_key as string)
+    const decode = Jwt.verify(token as string, config.secret_key as string) as JwtPayload
     const { role } = decode
     
 
