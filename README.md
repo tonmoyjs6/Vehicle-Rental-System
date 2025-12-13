@@ -22,3 +22,17 @@ TypesCript
 Jwt Authentication
 
 ## Instalation
+git clone https://github.com/tonmoyjs6/Vehicle-Rental-System.git
+
+Install dependency
+npm install
+
+## Environment Variables
+
+Create a `.env` file in the root directory and add:
+
+```env
+DATABASE_URL=your_database_url
+PORT=5000
+start The server
+npm run dev
