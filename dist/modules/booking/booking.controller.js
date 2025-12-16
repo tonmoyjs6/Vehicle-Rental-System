@@ -56,8 +56,9 @@ const updateBooking = async (req, res) => {
         const token = req.headers.authorization;
         const bearerToken = token?.split(" ")[1];
         const tokenDecode = jsonwebtoken_1.default.verify(bearerToken, config_1.config.secret_key);
-        const bookingDetails = await booking_service_1.bookingService.updateBooking(bookingId, tokenDecode);
-        if (bookingDetails[0].status === "cancelled") {
+        const booking = await booking_service_1.bookingService.updateBooking(bookingId, tokenDecode);
+        const bookingDetails = booking;
+        if (bookingDetails[0]?.status === "cancelled") {
             res.status(200).json({
                 succes: true,
                 message: "Booking cancelled successfully",

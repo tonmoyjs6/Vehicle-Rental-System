@@ -32,7 +32,7 @@ const deleteAVehicleByAdmin = async (vehicleId, isAdmin) => {
     const token = isAdmin?.split(" ")[1];
     const decode = jsonwebtoken_1.default.verify(token, config_1.config.secret_key);
     const { role } = decode;
-    if (role === "admin") {
+    if (role.includes("admin")) {
         const isActiveBooking = await db_1.pool.query(`SELECT * FROM bookings WHERE vehicle_id=$1`, [vehicleId]);
         if (isActiveBooking.rows[0].status !== "active") {
             const deleteVehicle = await db_1.pool.query(`DELETE FROM vehicles WHERE id=$1`, [vehicleId]);

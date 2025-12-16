@@ -1,7 +1,7 @@
 import { config } from "../../config/config"
 import { pool } from "../../config/db"
 import Jwt from "jsonwebtoken"
-import { JwtPayload } from "../interfaces/jwtpayload.interface"
+import { MyJwtPayload } from "../interfaces/jwtpayload.interface"
 
 // get all user role:admin
 
@@ -30,11 +30,11 @@ const deleteAUserByAdmin = async (userId: string, isAdmin: string) => {
 
 
     const token = isAdmin?.split(" ")[1]
-    const decode = Jwt.verify(token as string, config.secret_key as string) as JwtPayload
+    const decode = Jwt.verify(token as string, config.secret_key as string) as MyJwtPayload
     const { role } = decode
 
     console.log(role);
-    if (role === "admin") {
+    if (role.includes("admin")) {
         const isActiveuser = await pool.query(`SELECT * FROM bookings WHERE customer_id=$1`, [userId])
         console.log(isActiveuser.rows[0].status);
         if (isActiveuser.rows[0].status !== "active") {

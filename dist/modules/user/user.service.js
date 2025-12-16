@@ -22,7 +22,7 @@ const deleteAUserByAdmin = async (userId, isAdmin) => {
     const decode = jsonwebtoken_1.default.verify(token, config_1.config.secret_key);
     const { role } = decode;
     console.log(role);
-    if (role === "admin") {
+    if (role.includes("admin")) {
         const isActiveuser = await db_1.pool.query(`SELECT * FROM bookings WHERE customer_id=$1`, [userId]);
         console.log(isActiveuser.rows[0].status);
         if (isActiveuser.rows[0].status !== "active") {

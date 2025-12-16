@@ -1,5 +1,5 @@
 import { pool } from "../../config/db";
-import { JwtPayload } from "../interfaces/jwtpayload.interface";
+import { MyJwtPayload } from "../interfaces/jwtpayload.interface";
 
 
 
@@ -165,7 +165,7 @@ const getAllBooking = async (payload: Record<string, unknown>) => {
 
 
 
-const updateBooking=async(bookingId:string,tokenDecode:JwtPayload)=>{
+const updateBooking=async(bookingId:string,tokenDecode:MyJwtPayload)=>{
     
     let vehicleStatus="available"
     
@@ -183,7 +183,7 @@ const updateBooking=async(bookingId:string,tokenDecode:JwtPayload)=>{
 
     
     
-    if(role==="customer"){
+    if(role.includes("customer")){
         let status="cancelled"
         
         const customerSingleBooking=await pool.query(`SELECT * FROM bookings WHERE id=$1`,[bookingId])
@@ -212,7 +212,7 @@ const updateBooking=async(bookingId:string,tokenDecode:JwtPayload)=>{
         
     }
 
-            else if(role==="admin"){
+            else if(role.includes("admin")){
             let status="returned"
             let vehicleStatus="available"
             let data=[]

@@ -19,11 +19,4 @@ app.use("/api/v1/auth", auth_routes_1.authRouter);
 app.use("/api/v1/vehicles", vehicle_routes_1.vehicleRouter);
 app.use("/api/v1/users", user_routes_1.userRouter);
 app.use("/api/v1/bookings", booking_routes_1.bookingRouter);
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: "Route not found you should go valid route",
-        path: req.path,
-    });
-});
 exports.default = app;

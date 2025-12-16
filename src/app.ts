@@ -28,12 +28,6 @@ app.use("/api/v1/bookings",bookingRouter)
 
 
 
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found you should go valid route",
-    path: req.path,
-  });
-});
+
 
 export default app

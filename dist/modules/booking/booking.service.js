@@ -102,7 +102,7 @@ const updateBooking = async (bookingId, tokenDecode) => {
         const status = "returned";
         const updateData = await db_1.pool.query(`UPDATE bookings SET status=$1 WHERE id=$2 RETURNING *`, [status, bookingId]);
     }
-    if (role === "customer") {
+    if (role.includes("customer")) {
         let status = "cancelled";
         const customerSingleBooking = await db_1.pool.query(`SELECT * FROM bookings WHERE id=$1`, [bookingId]);
         const realcustomer = await db_1.pool.query(`SELECT * FROM users WHERE email=$1`, [email]);
@@ -116,7 +116,7 @@ const updateBooking = async (bookingId, tokenDecode) => {
             }
         }
     }
-    else if (role === "admin") {
+    else if (role.includes("admin")) {
         let status = "returned";
         let vehicleStatus = "available";
         let data = [];

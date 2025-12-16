@@ -1,7 +1,7 @@
 import { config } from "../../config/config"
 import { pool } from "../../config/db"
 import Jwt from "jsonwebtoken"
-import { JwtPayload } from "../interfaces/jwtpayload.interface"
+import { MyJwtPayload } from "../interfaces/jwtpayload.interface"
 
 // vehicle created only on role admin
 
@@ -50,11 +50,11 @@ const deleteAVehicleByAdmin = async (vehicleId: string, isAdmin: string) => {
 
 
     const token = isAdmin?.split(" ")[1]
-    const decode = Jwt.verify(token as string, config.secret_key as string) as JwtPayload
-    const { role } = decode
+    const decode = Jwt.verify(token as string, config.secret_key as string) as MyJwtPayload
+    const { role } = decode as{role:string[]}
     
 
-    if(role==="admin"){
+    if(role.includes("admin")){
         const isActiveBooking = await pool.query(`SELECT * FROM bookings WHERE vehicle_id=$1`, [vehicleId])
         if (isActiveBooking.rows[0].status !== "active") {
             const deleteVehicle= await pool.query(`DELETE FROM vehicles WHERE id=$1`,[vehicleId])

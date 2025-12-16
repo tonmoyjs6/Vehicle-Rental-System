@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { bookingService } from "./booking.service";
 import Jwt from "jsonwebtoken";
 import { config } from "../../config/config";
-import { JwtPayload } from "../interfaces/jwtpayload.interface";
+import { MyJwtPayload } from "../interfaces/jwtpayload.interface";
+import { Booking } from "../interfaces/boking.interface";
 
 
 
@@ -53,11 +54,11 @@ const getAllBooking = async (req: Request, res: Response) => {
         const bearerToken = req.headers.authorization
 
         const token = bearerToken?.split(" ")[1]
-        const decode = Jwt.verify(token as string, config.secret_key as string) as JwtPayload
+        const decode = Jwt.verify(token!, config.secret_key!) as unknown as MyJwtPayload
 
 
 
-        const result = await bookingService.getAllBooking(decode )
+        const result = await bookingService.getAllBooking(decode as Partial<MyJwtPayload>)
 
 
 
@@ -89,11 +90,11 @@ const updateBooking = async (req: Request, res: Response) => {
         const bookingId = req.params.bookingId
         const token = req.headers.authorization
         const bearerToken = token?.split(" ")[1]
-        const tokenDecode = Jwt.verify(bearerToken as string, config.secret_key as string) as JwtPayload
-        const bookingDetails = await bookingService.updateBooking(bookingId!, tokenDecode )
-
-
-        if (bookingDetails[0].status === "cancelled") {
+        const tokenDecode = Jwt.verify(bearerToken as string, config.secret_key as string) as MyJwtPayload
+        const booking = await bookingService.updateBooking(bookingId!, tokenDecode )
+        const bookingDetails=booking as unknown as  Booking[]; 
+        
+        if (bookingDetails[0]?.status === "cancelled") {
             res.status(200).json({
                 succes: true,
                 message: "Booking cancelled successfully",
